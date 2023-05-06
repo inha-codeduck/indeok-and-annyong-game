@@ -15,6 +15,9 @@ WHITE = (255, 255, 255)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Annyong and Indeok")
 
+# Sound
+sound = pygame.mixer.Sound("./sound/jump.mp3")
+
 # Character class
 class Character(pygame.sprite.Sprite):
     def __init__(self, x, y, image, control_keys):
@@ -31,6 +34,7 @@ class Character(pygame.sprite.Sprite):
         if keys[self.control_keys['right']] and self.rect.x < WIDTH - self.rect.width:
             self.rect.x += 5
         if keys[self.control_keys['up']] and self.rect.y > 0:
+            pygame.mixer.Sound.play(sound)
             self.rect.y -= 5
         if keys[self.control_keys['down']] and self.rect.y < HEIGHT - self.rect.height:
             self.rect.y += 5
