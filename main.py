@@ -1,6 +1,6 @@
 import pygame
 import sys
-from sound.mp3 import Sound
+
 # Initialize pygame
 pygame.init()
 
@@ -14,6 +14,9 @@ WHITE = (255, 255, 255)
 # Set up the display
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Annyong and Indeok")
+
+# Game sound effect
+jump_sound = pygame.mixer.Sound("./sound/jump.mp3")
 
 
 VELOCITY = 7
@@ -34,7 +37,7 @@ class Character(pygame.sprite.Sprite):
 
     def update(self):
         if self.is_jump:
-            Sound("jump").play()
+            pygame.mixer.Sound.play(jump_sound)
             if self.v > 0:
                 F = (0.5 * self.m * (self.v * self.v))
             else:
@@ -56,10 +59,10 @@ class Character(pygame.sprite.Sprite):
 
 
 # Load and resize image with smoothscale algorithm
-annyong_image_orig = pygame.image.load("./assets/images/annyong.png").convert_alpha()
+annyong_image_orig = pygame.image.load("annyong.png").convert_alpha()
 annyong_image = pygame.transform.smoothscale(annyong_image_orig, (80, int(annyong_image_orig.get_height() / annyong_image_orig.get_width() * 80)))
 
-indeok_image_orig = pygame.image.load("./assets/images/indeok.png").convert_alpha()
+indeok_image_orig = pygame.image.load("indeok.png").convert_alpha()
 indeok_image = pygame.transform.smoothscale(indeok_image_orig, (80, int(indeok_image_orig.get_height() / indeok_image_orig.get_width() * 80)))
 
 # Create characters
