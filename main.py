@@ -1,6 +1,6 @@
 import pygame
 import sys
-from sound.mp3 import Sound
+
 # Initialize pygame
 pygame.init()
 
@@ -15,9 +15,35 @@ WHITE = (255, 255, 255)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Annyong and Indeok")
 
+# Game sound effect
+#jump_sound = pygame.mixer.Sound("./sound/jump.mp3")
+
 
 VELOCITY = 7
 MASS = 2
+
+# Making Paused
+def game_paused():
+    paused_screen = pygame.display.set_mode((500,500))
+
+    pygame.font.init()
+    paused_font = pygame.font.SysFont('Arial', 40, True, True)
+    paused_message = 'Paused'
+    paused_message_object = paused_font.render(paused_message, True, (0,0,0))
+    paused_message_rect = paused_message_object.get_rect()
+    paused_message_rect.center = (600,200)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                return
+        paused_screen.fill((255,255,255))
+        paused_screen.blit(paused_message_object, paused_message_rect)
+        pygame.display.update()
+
 
 # Character class
 class Character(pygame.sprite.Sprite):
@@ -34,7 +60,7 @@ class Character(pygame.sprite.Sprite):
 
     def update(self):
         if self.is_jump:
-            Sound("jump").play()
+            #pygame.mixer.Sound.play(jump_sound)
             if self.v > 0:
                 F = (0.5 * self.m * (self.v * self.v))
             else:
@@ -56,10 +82,10 @@ class Character(pygame.sprite.Sprite):
 
 
 # Load and resize image with smoothscale algorithm
-annyong_image_orig = pygame.image.load("./assets/images/annyong.png").convert_alpha()
+annyong_image_orig = pygame.image.load("annyong.png").convert_alpha()
 annyong_image = pygame.transform.smoothscale(annyong_image_orig, (80, int(annyong_image_orig.get_height() / annyong_image_orig.get_width() * 80)))
 
-indeok_image_orig = pygame.image.load("./assets/images/indeok.png").convert_alpha()
+indeok_image_orig = pygame.image.load("indeok.png").convert_alpha()
 indeok_image = pygame.transform.smoothscale(indeok_image_orig, (80, int(indeok_image_orig.get_height() / indeok_image_orig.get_width() * 80)))
 
 # Create characters
