@@ -81,10 +81,10 @@ class Character(pygame.sprite.Sprite):
 
 
 # Load and resize image with smoothscale algorithm
-annyong_image_orig = pygame.image.load("annyong.png").convert_alpha()
+annyong_image_orig = pygame.image.load("./assets/images/annyong.png").convert_alpha()
 annyong_image = pygame.transform.smoothscale(annyong_image_orig, (80, int(annyong_image_orig.get_height() / annyong_image_orig.get_width() * 80)))
 
-indeok_image_orig = pygame.image.load("indeok.png").convert_alpha()
+indeok_image_orig = pygame.image.load("./assets/images/indeok.png").convert_alpha()
 indeok_image = pygame.transform.smoothscale(indeok_image_orig, (80, int(indeok_image_orig.get_height() / indeok_image_orig.get_width() * 80)))
 
 # Create characters
