@@ -24,7 +24,7 @@ MASS = 2
 
 # Making Paused
 def game_paused():
-    paused_screen = pygame.display.set_mode((500,500))
+    paused_screen = pygame.display.set_mode((1200,800))
 
     pygame.font.init()
     paused_font = pygame.font.SysFont('Arial', 40, True, True)
@@ -108,6 +108,10 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        #ESC입력 시 paused 화면 구현
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            game_paused()
+
     keys = pygame.key.get_pressed()
 
     for character in characters:
