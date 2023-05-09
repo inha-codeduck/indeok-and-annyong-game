@@ -59,7 +59,6 @@ class Character(pygame.sprite.Sprite):
 
     def update(self):
         if self.is_jump:
-            jump_sound.play()
             if self.v > 0:
                 F = (0.5 * self.m * (self.v * self.v))
             else:
@@ -67,6 +66,7 @@ class Character(pygame.sprite.Sprite):
             self.rect.y -= round(F)
             self.v -= 1
             if self.rect.bottom > HEIGHT:
+                jump_sound.play()
                 self.rect.bottom = HEIGHT
                 self.is_jump = False
                 self.v = VELOCITY
