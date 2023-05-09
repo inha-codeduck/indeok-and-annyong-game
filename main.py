@@ -1,7 +1,22 @@
 import pygame
 import sys
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 from sound.mp3 import Sound
 
+=======
+<<<<<<< HEAD
+=======
+from sound.mp3 import Sound
+>>>>>>> 2b3566ab3f7a872571fd95d61a4a583089d5d61f
+>>>>>>> c2b311c (Revert "no file error resolved")
+=======
+from sound.mp3 import Sound
+>>>>>>> 4b80dbe (fix: [minseok] revert1)
+=======
+from sound.mp3 import Sound
+>>>>>>> 9dbf528 (develop commit error and revert recent commit )
 
 # Initialize pygame
 pygame.init()
@@ -18,14 +33,31 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Annyong and Indeok")
 
 # Game sound effect
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 jump_sound = Sound(name="jump")
+=======
+<<<<<<< HEAD
+#jump_sound = pygame.mixer.Sound("./sound/jump.mp3")
+
+=======
+jump_sound = Sound(name="jump")
+>>>>>>> 2b3566ab3f7a872571fd95d61a4a583089d5d61f
+>>>>>>> c2b311c (Revert "no file error resolved")
+=======
+jump_sound = Sound(name="jump")
+>>>>>>> 4b80dbe (fix: [minseok] revert1)
+=======
+jump_sound = Sound(name="jump")
+>>>>>>> 9dbf528 (develop commit error and revert recent commit )
 
 VELOCITY = 7
 MASS = 2
 
 # Making Paused
 def game_paused():
-    paused_screen = pygame.display.set_mode((1200,800))
+    paused_screen = pygame.display.set_mode((500,500))
 
     pygame.font.init()
     paused_font = pygame.font.SysFont('Arial', 40, True, True)
@@ -45,6 +77,19 @@ def game_paused():
         paused_screen.blit(paused_message_object, paused_message_rect)
         pygame.display.update()
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> 2b3566ab3f7a872571fd95d61a4a583089d5d61f
+>>>>>>> c2b311c (Revert "no file error resolved")
+=======
+>>>>>>> 4b80dbe (fix: [minseok] revert1)
+=======
+>>>>>>> 9dbf528 (develop commit error and revert recent commit )
 # Character class
 class Character(pygame.sprite.Sprite):
     def __init__(self, x, y, image, control_keys):
@@ -60,6 +105,19 @@ class Character(pygame.sprite.Sprite):
 
     def update(self):
         if self.is_jump:
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            #pygame.mixer.Sound.play(jump_sound)
+=======
+>>>>>>> 2b3566ab3f7a872571fd95d61a4a583089d5d61f
+>>>>>>> c2b311c (Revert "no file error resolved")
+=======
+>>>>>>> 4b80dbe (fix: [minseok] revert1)
+=======
+>>>>>>> 9dbf528 (develop commit error and revert recent commit )
             if self.v > 0:
                 F = (0.5 * self.m * (self.v * self.v))
             else:
@@ -108,10 +166,6 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        #ESC입력 시 paused 화면 구현
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            game_paused()
-
     keys = pygame.key.get_pressed()
 
     if keys[pygame.K_ESCAPE]:
