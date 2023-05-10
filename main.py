@@ -1,6 +1,7 @@
 import pygame
 import sys
 from sound.mp3 import Sound
+import time
 
 # Initialize pygame
 pygame.init()
@@ -21,10 +22,12 @@ jump_sound = Sound(name="jump")
 
 VELOCITY = 7
 MASS = 2
+paused_time = 0
+
 
 # Making Paused
-def game_paused():
-    paused_screen = pygame.display.set_mode((500,500))
+def game_paused(paused_time):
+    paused_screen = pygame.display.set_mode((1200,800))
 
     pygame.font.init()
     paused_font = pygame.font.SysFont('Arial', 40, True, True)
@@ -39,7 +42,9 @@ def game_paused():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                return
+                paused_time = 0
+                return paused_time
+            
         paused_screen.fill((255,255,255))
         paused_screen.blit(paused_message_object, paused_message_rect)
         pygame.display.update()
@@ -107,10 +112,13 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        #initializing paused screen
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            paused_time = pygame.time.get_ticks() - start_time
+            paused_time = game_paused(paused_time)
+            start_time = pygame.time.get_ticks() - paused_time
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_ESCAPE]:
-        game_paused()
 
     for character in characters:
         character.move(keys)
