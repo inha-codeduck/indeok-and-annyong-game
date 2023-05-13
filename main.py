@@ -55,11 +55,12 @@ jump_sound = Sound(name="jump")
 
 VELOCITY = 7
 MASS = 2
-paused_time = 0
+paused_time = 0 #일시정지 시 현재 경과시간 받아오는 변수
+paused = 0 #일시정지 여부
 
 
 # Making Paused
-def game_paused(paused_time):
+def game_paused(time_elapsed):
     paused_screen = pygame.display.set_mode((1200,800))
 
     pygame.font.init()
@@ -75,7 +76,7 @@ def game_paused(paused_time):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                paused_time = 0
+                paused_time = time_elapsed
                 return paused_time
             
         paused_screen.fill((255,255,255))
@@ -173,11 +174,10 @@ while True:
             sys.exit()
         #initializing paused screen
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            paused_time = pygame.time.get_ticks() - start_time
-            paused_time = game_paused(paused_time)
-            start_time = pygame.time.get_ticks() - paused_time
-    keys = pygame.key.get_pressed()
+            paused_time = game_paused(time_elapsed)
+            paused = 1
 
+    keys = pygame.key.get_pressed()
 
     for character in characters:
         character.move(keys)
@@ -187,7 +187,11 @@ while True:
     characters.draw(screen)
 
     # Display time elapsed
-    time_elapsed = pygame.time.get_ticks() - start_time
+    if paused == 0:
+        time_elapsed = pygame.time.get_ticks() - start_time
+        
+    else:
+        time_elapsed = pygame.time.get_ticks() - (start_time + paused_time)
     time_elapsed_str = f"{time_elapsed // 60000 % 60:02d}:{time_elapsed // 1000 % 60:02d}"
     time_text = font.render(time_elapsed_str, True, (0, 0, 0))
     screen.blit(time_text, (WIDTH - time_text.get_width() - 10, 10))
