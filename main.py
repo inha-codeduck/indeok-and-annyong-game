@@ -4,6 +4,7 @@ import sys
 <<<<<<< HEAD
 <<<<<<< HEAD
 from sound.mp3 import Sound
+<<<<<<< HEAD
 import time
 
 =======
@@ -18,6 +19,9 @@ from sound.mp3 import Sound
 =======
 from sound.mp3 import Sound
 >>>>>>> 9dbf528 (develop commit error and revert recent commit )
+=======
+from object.jewel import Jewel
+>>>>>>> 1132338 (fix: [minseok] #21)
 
 # Initialize pygame
 pygame.init()
@@ -155,10 +159,13 @@ indeok_image = pygame.transform.smoothscale(indeok_image_orig, (80, int(indeok_i
 # Create characters
 annyong = Character(0, 690, annyong_image, {'left': pygame.K_a, 'right': pygame.K_d, 'up': pygame.K_w})
 indeok = Character(1000, 660, indeok_image, {'left': pygame.K_LEFT, 'right': pygame.K_RIGHT, 'up': pygame.K_UP})
-
+jewel = Jewel(500, 500, "blue")
 # Add characters to sprite group
 characters = pygame.sprite.Group()
 characters.add(annyong, indeok)
+
+jewels = pygame.sprite.Group()
+jewels.add(jewel)
 
 clock = pygame.time.Clock()
 start_time = pygame.time.get_ticks()
@@ -185,7 +192,7 @@ while True:
 
     screen.fill(WHITE)
     characters.draw(screen)
-
+    jewels.draw(screen)
     # Display time elapsed
     if paused == 0:
         time_elapsed = pygame.time.get_ticks() - start_time

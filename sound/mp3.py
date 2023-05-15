@@ -1,10 +1,13 @@
 import pygame
+import os
+
+current_path = os.getcwd()
 
 class Sound:
-    def __init__(self, name=None):
+    def __init__(self, name = None):
         if name is not None:
             self.name = name
-            self.file_name = pygame.mixer.Sound(f"./assets/sound/{self.name}.mp3")
+            self.file_name = pygame.mixer.Sound(f"{current_path}/assets/sounds/{self.name}.mp3")
         else:
             self.name = None
             self.file_name = None
