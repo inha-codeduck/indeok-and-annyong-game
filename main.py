@@ -21,7 +21,11 @@ from sound.mp3 import Sound
 >>>>>>> 9dbf528 (develop commit error and revert recent commit )
 =======
 from object.jewel import Jewel
+<<<<<<< HEAD
 >>>>>>> 1132338 (fix: [minseok] #21)
+=======
+import time
+>>>>>>> b9df464 (#24 issue resolved)
 
 # Initialize pygame
 pygame.init()
@@ -68,23 +72,56 @@ def game_paused(time_elapsed):
     paused_screen = pygame.display.set_mode((1200,800))
 
     pygame.font.init()
+
+    #Pause 글씨 박스 만들기
     paused_font = pygame.font.SysFont('Arial', 40, True, True)
     paused_message = 'Paused'
     paused_message_object = paused_font.render(paused_message, True, (0,0,0))
     paused_message_rect = paused_message_object.get_rect()
     paused_message_rect.center = (600,200)
 
+    #Resume 글씨 박스 만들기(버튼용)
+    resume_font = pygame.font.SysFont('Arial', 20, True, True)
+    resume_message = 'Resume'
+    resume_message_object = resume_font.render(resume_message, True, (0,0,0))
+    resume_message_rect = resume_message_object.get_rect()
+    resume_message_rect.center = (600,300)
+
+    #Quit 글씨 박스 만들기(버튼용)
+    quit_font = pygame.font.SysFont('Arial', 20, True, True)
+    quit_message = 'Quit'
+    quit_message_object = quit_font.render(quit_message, True, (0,0,0))
+    quit_message_rect = quit_message_object.get_rect()
+    quit_message_rect.center = (600,350)
+
+
     while True:
         for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                if resume_message_rect.collidepoint(mouse_pos): #Resume 박스 클릭 시
+                    paused_time = time_elapsed
+                    return paused_time
+                elif quit_message_rect.collidepoint(mouse_pos): #Quit 박스 클릭 시
+                    pygame.quit()
+                    sys.exit()
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 paused_time = time_elapsed
                 return paused_time
             
+<<<<<<< HEAD
+=======
+        #스크린에 텍스트 넣은 박스 나타나게 하기
+>>>>>>> b9df464 (#24 issue resolved)
         paused_screen.fill((255,255,255))
         paused_screen.blit(paused_message_object, paused_message_rect)
+        paused_screen.blit(resume_message_object, resume_message_rect)
+        paused_screen.blit(quit_message_object, quit_message_rect)
         pygame.display.update()
 
 <<<<<<< HEAD
