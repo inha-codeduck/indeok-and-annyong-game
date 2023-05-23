@@ -1,244 +1,169 @@
-import pygame
 import sys
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-from sound.mp3 import Sound
-<<<<<<< HEAD
-import time
+import pygame
+from pygame.locals import *
 
-=======
-<<<<<<< HEAD
-=======
-from sound.mp3 import Sound
->>>>>>> 2b3566ab3f7a872571fd95d61a4a583089d5d61f
->>>>>>> c2b311c (Revert "no file error resolved")
-=======
-from sound.mp3 import Sound
->>>>>>> 4b80dbe (fix: [minseok] revert1)
-=======
-from sound.mp3 import Sound
->>>>>>> 9dbf528 (develop commit error and revert recent commit )
-=======
-from object.jewel import Jewel
-<<<<<<< HEAD
->>>>>>> 1132338 (fix: [minseok] #21)
-=======
-import time
->>>>>>> b9df464 (#24 issue resolved)
-
-# Initialize pygame
-pygame.init()
-
-# Constants
-WIDTH, HEIGHT = 1200, 800
-FPS = 60
-
-# Colors
-WHITE = (255, 255, 255)
-
-# Set up the display
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Annyong and Indeok")
-
-# Game sound effect
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-jump_sound = Sound(name="jump")
-=======
-<<<<<<< HEAD
-#jump_sound = pygame.mixer.Sound("./sound/jump.mp3")
-
-=======
-jump_sound = Sound(name="jump")
->>>>>>> 2b3566ab3f7a872571fd95d61a4a583089d5d61f
->>>>>>> c2b311c (Revert "no file error resolved")
-=======
-jump_sound = Sound(name="jump")
->>>>>>> 4b80dbe (fix: [minseok] revert1)
-=======
-jump_sound = Sound(name="jump")
->>>>>>> 9dbf528 (develop commit error and revert recent commit )
-
-VELOCITY = 7
-MASS = 2
-paused_time = 0 #일시정지 시 현재 경과시간 받아오는 변수
-paused = 0 #일시정지 여부
+# import classes
+from game import Game
+from board import Board
+from character import Indeok, Annyong
+from controller import ArrowsController, WASDController, GeneralController
+from gates import Gates
+from doors import IndeokDoor, AnnyongDoor
+from level_select import LevelSelect
 
 
-# Making Paused
-def game_paused(time_elapsed):
-    paused_screen = pygame.display.set_mode((1200,800))
+def main():
+    pygame.init()
+    controller = GeneralController()
+    game = Game()
+    show_intro_screen(game, controller)
 
-    pygame.font.init()
 
-    #Pause 글씨 박스 만들기
-    paused_font = pygame.font.SysFont('Arial', 40, True, True)
-    paused_message = 'Paused'
-    paused_message_object = paused_font.render(paused_message, True, (0,0,0))
-    paused_message_rect = paused_message_object.get_rect()
-    paused_message_rect.center = (600,200)
+def show_intro_screen(game, controller):
+    intro_screen = pygame.image.load('data/screens/intro_screen.png')
+    game.display.blit(intro_screen, (0, 0))
+    while True:
+        game.refresh_window()
+        if controller.press_key(pygame.event.get(), K_RETURN):
+            show_level_screen(game, controller)
 
-    #Resume 글씨 박스 만들기(버튼용)
-    resume_font = pygame.font.SysFont('Arial', 20, True, True)
-    resume_message = 'Resume'
-    resume_message_object = resume_font.render(resume_message, True, (0,0,0))
-    resume_message_rect = resume_message_object.get_rect()
-    resume_message_rect.center = (600,300)
 
-    #Quit 글씨 박스 만들기(버튼용)
-    quit_font = pygame.font.SysFont('Arial', 20, True, True)
-    quit_message = 'Quit'
-    quit_message_object = quit_font.render(quit_message, True, (0,0,0))
-    quit_message_rect = quit_message_object.get_rect()
-    quit_message_rect.center = (600,350)
+def show_level_screen(game, controller):
+    level_select = LevelSelect()
+    level = game.user_select_level(level_select, controller)
+    run_game(game, controller, level)
 
+
+def show_win_screen(game, controller):
+    win_screen = pygame.image.load('data/screens/win_screen.png')
+    win_screen.set_colorkey((255, 0, 255))
+    game.display.blit(win_screen, (0, 0))
 
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                if resume_message_rect.collidepoint(mouse_pos): #Resume 박스 클릭 시
-                    paused_time = time_elapsed
-                    return paused_time
-                elif quit_message_rect.collidepoint(mouse_pos): #Quit 박스 클릭 시
-                    pygame.quit()
-                    sys.exit()
+        game.refresh_window()
+        if controller.press_key(pygame.event.get(), K_RETURN):
+            show_level_screen(game, controller)
 
-            if event.type == pygame.QUIT:
+
+def show_death_screen(game, controller, level):
+    death_screen = pygame.image.load('data/screens/death_screen.png')
+    death_screen.set_colorkey((255, 0, 255))
+    game.display.blit(death_screen, (0, 0))
+    while True:
+        game.refresh_window()
+        events = pygame.event.get()
+        if controller.press_key(events, K_RETURN):
+            run_game(game, controller, level)
+        if controller.press_key(events, K_ESCAPE):
+            show_level_screen(game, controller)
+
+
+def run_game(game, controller, level="level1"):
+    # load level data
+    if level == "level1":
+        board = Board('data/level1.txt')
+        gate_location = (285, 128)
+        plate_locations = [(190, 168), (390, 168)]
+        gate = Gates(gate_location, plate_locations)
+        gates = [gate]
+
+        indeok_door_location = (64, 48)
+        indeok_door = IndeokDoor(indeok_door_location)
+        annyong_door_location = (128, 48)
+        annyong_door = AnnyongDoor(annyong_door_location)
+        doors = [indeok_door, annyong_door]
+
+        indeok_location = (16, 336)
+        indeok = Indeok(indeok_location)
+        annyong_location = (35, 336)
+        annyong = Annyong(annyong_location)
+
+    if level == "level2":
+        board = Board('data/level2.txt')
+        gates = []
+
+        indeok_door_location = (390, 48)
+        indeok_door = IndeokDoor(indeok_door_location)
+        annyong_door_location = (330, 48)
+        annyong_door = AnnyongDoor(annyong_door_location)
+        doors = [indeok_door, annyong_door]
+
+        indeok_location = (16, 336)
+        indeok = Indeok(indeok_location)
+        annyong_location = (35, 336)
+        annyong = Annyong(annyong_location)
+
+    if level == "level3":
+        board = Board('data/level3.txt')
+        gates = []
+
+        indeok_door_location = (5 * 16, 4 * 16)
+        indeok_door = IndeokDoor(indeok_door_location)
+        annyong_door_location = (28 * 16, 4 * 16)
+        annyong_door = AnnyongDoor(annyong_door_location)
+        doors = [indeok_door, annyong_door]
+
+        indeok_location = (28 * 16, 4 * 16)
+        indeok = Indeok(indeok_location)
+        annyong_location = (5 * 16, 4 * 16)
+        annyong = Annyong(annyong_location)
+
+    # initialize needed classes
+
+    arrows_controller = ArrowsController()
+    wasd_controller = WASDController()
+
+    clock = pygame.time.Clock()
+
+    # main game loop
+    while True:
+        # pygame management
+        clock.tick(60)
+        events = pygame.event.get()
+
+        # draw features of level
+        game.draw_level_background(board)
+        game.draw_board(board)
+        if gates:
+            game.draw_gates(gates)
+        game.draw_doors(doors)
+
+        # draw player
+        game.draw_player([indeok, annyong])
+
+        # move player
+        arrows_controller.control_player(events, indeok)
+        wasd_controller.control_player(events, annyong)
+
+        game.move_player(board, gates, [indeok, annyong])
+
+        # check for player at special location
+        game.check_for_death(board, [indeok, annyong])
+
+        game.check_for_gate_press(gates, [indeok, annyong])
+
+        game.check_for_door_open(indeok_door, indeok)
+        game.check_for_door_open(annyong_door, annyong)
+
+        # refresh window
+        game.refresh_window()
+
+        # special events
+        if annyong.is_dead() or indeok.is_dead():
+            show_death_screen(game, controller, level)
+
+        if game.level_is_done(doors):
+            show_win_screen(game, controller)
+
+        if controller.press_key(events, K_ESCAPE):
+            show_level_screen(game, controller)
+
+        # close window is player clicks on [x]
+        for event in events:
+            if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                paused_time = time_elapsed
-                return paused_time
-            
-<<<<<<< HEAD
-=======
-        #스크린에 텍스트 넣은 박스 나타나게 하기
->>>>>>> b9df464 (#24 issue resolved)
-        paused_screen.fill((255,255,255))
-        paused_screen.blit(paused_message_object, paused_message_rect)
-        paused_screen.blit(resume_message_object, resume_message_rect)
-        paused_screen.blit(quit_message_object, quit_message_rect)
-        pygame.display.update()
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> 2b3566ab3f7a872571fd95d61a4a583089d5d61f
->>>>>>> c2b311c (Revert "no file error resolved")
-=======
->>>>>>> 4b80dbe (fix: [minseok] revert1)
-=======
->>>>>>> 9dbf528 (develop commit error and revert recent commit )
-# Character class
-class Character(pygame.sprite.Sprite):
-    def __init__(self, x, y, image, control_keys):
-        super().__init__()
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-        self.control_keys = control_keys
-        self.is_jump = False
-        self.v = VELOCITY
-        self.m = MASS
-
-    def update(self):
-        if self.is_jump:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-            #pygame.mixer.Sound.play(jump_sound)
-=======
->>>>>>> 2b3566ab3f7a872571fd95d61a4a583089d5d61f
->>>>>>> c2b311c (Revert "no file error resolved")
-=======
->>>>>>> 4b80dbe (fix: [minseok] revert1)
-=======
->>>>>>> 9dbf528 (develop commit error and revert recent commit )
-            if self.v > 0:
-                F = (0.5 * self.m * (self.v * self.v))
-            else:
-                F = -(0.5 * self.m * (self.v * self.v))
-            self.rect.y -= round(F)
-            self.v -= 1
-            if self.rect.bottom > HEIGHT:
-                jump_sound.play()
-                self.rect.bottom = HEIGHT
-                self.is_jump = False
-                self.v = VELOCITY
-
-    def move(self, keys):
-        if keys[self.control_keys['left']] and self.rect.x > 0:
-            self.rect.x -= 5
-        if keys[self.control_keys['right']] and self.rect.x < WIDTH - self.rect.width:
-            self.rect.x += 5
-        if keys[self.control_keys['up']] and self.rect.y > 0:
-            self.is_jump = True
-
-
-# Load and resize image with smoothscale algorithm
-annyong_image_orig = pygame.image.load("./assets/images/annyong.png").convert_alpha()
-annyong_image = pygame.transform.smoothscale(annyong_image_orig, (80, int(annyong_image_orig.get_height() / annyong_image_orig.get_width() * 80)))
-
-indeok_image_orig = pygame.image.load("./assets/images/indeok.png").convert_alpha()
-indeok_image = pygame.transform.smoothscale(indeok_image_orig, (80, int(indeok_image_orig.get_height() / indeok_image_orig.get_width() * 80)))
-
-# Create characters
-annyong = Character(0, 690, annyong_image, {'left': pygame.K_a, 'right': pygame.K_d, 'up': pygame.K_w})
-indeok = Character(1000, 660, indeok_image, {'left': pygame.K_LEFT, 'right': pygame.K_RIGHT, 'up': pygame.K_UP})
-jewel = Jewel(500, 500, "blue")
-# Add characters to sprite group
-characters = pygame.sprite.Group()
-characters.add(annyong, indeok)
-
-jewels = pygame.sprite.Group()
-jewels.add(jewel)
-
-clock = pygame.time.Clock()
-start_time = pygame.time.get_ticks()
-
-# Font for displaying time
-font = pygame.font.Font(None, 36)
-
-# Main game loop
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        #initializing paused screen
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            paused_time = game_paused(time_elapsed)
-            paused = 1
-
-    keys = pygame.key.get_pressed()
-
-    for character in characters:
-        character.move(keys)
-        character.update()
-
-    screen.fill(WHITE)
-    characters.draw(screen)
-    jewels.draw(screen)
-    # Display time elapsed
-    if paused == 0:
-        time_elapsed = pygame.time.get_ticks() - start_time
-        
-    else:
-        time_elapsed = pygame.time.get_ticks() - (start_time + paused_time)
-    time_elapsed_str = f"{time_elapsed // 60000 % 60:02d}:{time_elapsed // 1000 % 60:02d}"
-    time_text = font.render(time_elapsed_str, True, (0, 0, 0))
-    screen.blit(time_text, (WIDTH - time_text.get_width() - 10, 10))
-
-    pygame.display.flip()
-    clock.tick(FPS)
+if __name__ == '__main__':
+    main()
