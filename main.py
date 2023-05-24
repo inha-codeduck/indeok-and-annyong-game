@@ -57,6 +57,55 @@ def show_death_screen(game, controller, level):
         if controller.press_key(events, K_ESCAPE):
             show_level_screen(game, controller)
 
+def game_paused():
+    paused_screen = pygame.display.set_mode((640,480))
+
+    pygame.font.init()
+
+    #Pause 글씨 박스 만들기
+    paused_message_object = pygame.image.load('data/screens/paused.png')
+    paused_message_rect = paused_message_object.get_rect()
+    paused_message_rect.center = (320,100)
+
+    #Resume 글씨 박스 만들기(버튼용)
+    resume_message_object = pygame.image.load('data/screens/continue.png')
+    resume_message_rect = resume_message_object.get_rect()
+    resume_message_rect.center = (320,200)
+
+    #Restart 글씨 박스 만들기(버튼용)
+    restart_message_object = pygame.image.load('data/screens/restart.png')
+    restart_message_rect = restart_message_object.get_rect()
+    restart_message_rect.center = (320,250)
+
+    #Quit 글씨 박스 만들기(버튼용)
+    quit_message_object = pygame.image.load('data/screens/quit.png')
+    quit_message_rect = quit_message_object.get_rect()
+    quit_message_rect.center = (320,300)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                if resume_message_rect.collidepoint(mouse_pos): #Resume 박스 클릭 시
+                    return
+                elif quit_message_rect.collidepoint(mouse_pos): #Quit 박스 클릭 시
+                    pygame.quit()
+                    sys.exit()
+                elif restart_message_rect.collidepoint(mouse_pos):
+                    main()
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                return
+
+        #스크린에 텍스트 넣은 박스 나타나게 하기
+        paused_screen.fill((255,255,255))
+        paused_screen.blit(paused_message_object, paused_message_rect)
+        paused_screen.blit(resume_message_object, resume_message_rect)
+        paused_screen.blit(restart_message_object, restart_message_rect)
+        paused_screen.blit(quit_message_object, quit_message_rect)
+        pygame.display.update()
 
 def run_game(game, controller, level="level1"):
     # load level data
@@ -156,7 +205,8 @@ def run_game(game, controller, level="level1"):
             show_win_screen(game, controller)
 
         if controller.press_key(events, K_ESCAPE):
-            show_level_screen(game, controller)
+            # show_level_screen(game, controller)
+            game_paused()
 
         # close window is player clicks on [x]
         for event in events:

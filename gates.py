@@ -48,7 +48,7 @@ class Gates:
         """
         If person is on button, open gate, otherwise, keep gate closed
         """
-        CHUNK_SIZE = 16
+        CHUNK_SIZE = 20
         gate_x = self.gate_location[0]
         gate_y = self.gate_location[1]
         # if plate is pressed and gate is not open
