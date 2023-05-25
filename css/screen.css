@@ -1,5 +1,5 @@
 @charset "UTF-8";
-footer .footer-columns, .contact-box, .staff, .plans { display: -webkit-box; display: -webkit-flex; display: -moz-flex; display: -ms-flexbox; display: flex; }
+.contact-box, .staff, .plans { display: -webkit-box; display: -webkit-flex; display: -moz-flex; display: -ms-flexbox; display: flex; }
 
 html { background: #2b2b40; }
 
@@ -249,33 +249,7 @@ nav a:hover { border-bottom: 1px solid rgba(255, 255, 255, 0.3); color: #fff; }
 
 nav a.active { color: #fff; }
 
-.footer-links { width: 100%; margin: 10px; padding: 0; }
-
-@media (min-width: 450px) { .footer-links { -webkit-flex: 1 0 180px; flex: 1 0 180px; } }
-
-.footer-links li { list-style: none; margin: 15px auto; }
-
-@media (min-width: 450px) { .footer-links li { max-width: 150px; } }
-
-.footer-links li a:hover { text-decoration: none; }
-
-.footer-links li a svg { fill: #999; margin-right: 10px; transition: fill 0.2s ease; vertical-align: middle; position: relative; top: -2px; width: 22px; height: 22px; }
-
-.footer-links li a:hover svg { fill: #fff; }
-
-.footer-links li a.twitter-icon:hover svg { fill: #55acee; }
-
-.footer-links li a.google-plus-icon:hover svg { fill: #db4437; }
-
-.footer-links li a.youtube-icon:hover svg { fill: #cd201f; }
-
-.footer-links li a.instagram-icon:hover svg { fill: #f167f5; }
-
-.footer-links li a.linkedin-icon:hover svg { fill: #0077b5; }
-
-.footer-links li a.pinterest-icon:hover svg { fill: #bd081c; }
-
-.footer-links li a.rss-icon:hover svg { fill: #f26522; }
+.footer-links { list-style-type: none; padding: 0; margin: 0 20px; }
 
 footer { padding: 50px 0 50px 0; font-size: 1.1em; position: relative; background: #2b2b40; color: #fff; }
 
@@ -287,7 +261,7 @@ footer, footer a { color: #999; }
 
 footer h2 { font-size: 1.4em; margin: 30px 0; color: #ccc; }
 
-footer .footer-columns { -webkit-flex-flow: wrap; -moz-flex-flow: wrap; -ms-flex-flow: wrap; flex-flow: wrap; margin: -10px -10px 10px -10px; }
+footer .footer-columns { display: flex; justify-content: center; flex-wrap: wrap; }
 
 footer a { text-decoration: none; }
 
