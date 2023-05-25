@@ -2,15 +2,14 @@ import sys
 import pygame
 from pygame.locals import *
 
-# import classes
-from game import Game
-from board import Board
-from character import Indeok, Annyong
-from controller import ArrowsController, WASDController, GeneralController
-from gates import Gates
-from doors import IndeokDoor, AnnyongDoor
-from level_select import LevelSelect
-
+# Import modules from the indeok_and_annyong_game package
+from indeok_and_annyong_game.game import Game
+from indeok_and_annyong_game.board import Board
+from indeok_and_annyong_game.character import Indeok, Annyong
+from indeok_and_annyong_game.controller import ArrowsController, WASDController, GeneralController
+from indeok_and_annyong_game.gates import Gates
+from indeok_and_annyong_game.doors import IndeokDoor, AnnyongDoor
+from indeok_and_annyong_game.level_select import LevelSelect
 
 def main():
     pygame.init()
@@ -20,7 +19,7 @@ def main():
 
 
 def show_intro_screen(game, controller):
-    intro_screen = pygame.image.load('data/screens/intro_screen.png')
+    intro_screen = pygame.image.load('resources/screens/intro_screen.png')
     game.display.blit(intro_screen, (0, 0))
     while True:
         game.refresh_window()
@@ -35,7 +34,7 @@ def show_level_screen(game, controller):
 
 
 def show_win_screen(game, controller):
-    win_screen = pygame.image.load('data/screens/win_screen.png')
+    win_screen = pygame.image.load('resources/screens/win_screen.png')
     win_screen.set_colorkey((255, 0, 255))
     game.display.blit(win_screen, (0, 0))
 
@@ -46,7 +45,7 @@ def show_win_screen(game, controller):
 
 
 def show_death_screen(game, controller, level):
-    death_screen = pygame.image.load('data/screens/death_screen.png')
+    death_screen = pygame.image.load('resources/screens/death_screen.png')
     death_screen.set_colorkey((255, 0, 255))
     game.display.blit(death_screen, (0, 0))
     while True:
@@ -57,38 +56,36 @@ def show_death_screen(game, controller, level):
         if controller.press_key(events, K_ESCAPE):
             show_level_screen(game, controller)
 
-def game_paused():
-    paused_screen = pygame.display.set_mode((640,480))
-
+def game_paused(game):
     pygame.font.init()
 
-    #Pause 글씨 박스 만들기
-    paused_message_object = pygame.image.load('data/screens/paused.png')
+    # Pause 글씨 박스 만들기
+    paused_message_object = pygame.image.load('resources/screens/paused.png')
     paused_message_rect = paused_message_object.get_rect()
-    paused_message_rect.center = (320,100)
+    paused_message_rect.center = (512, 384)
 
-    #Resume 글씨 박스 만들기(버튼용)
-    resume_message_object = pygame.image.load('data/screens/continue.png')
+    # Resume 글씨 박스 만들기(버튼용)
+    resume_message_object = pygame.image.load('resources/screens/continue.png')
     resume_message_rect = resume_message_object.get_rect()
-    resume_message_rect.center = (320,200)
+    resume_message_rect.center = (512, 480)
 
-    #Restart 글씨 박스 만들기(버튼용)
-    restart_message_object = pygame.image.load('data/screens/restart.png')
+    # Restart 글씨 박스 만들기(버튼용)
+    restart_message_object = pygame.image.load('resources/screens/restart.png')
     restart_message_rect = restart_message_object.get_rect()
-    restart_message_rect.center = (320,250)
+    restart_message_rect.center = (512, 576)
 
-    #Quit 글씨 박스 만들기(버튼용)
-    quit_message_object = pygame.image.load('data/screens/quit.png')
+    # Quit 글씨 박스 만들기(버튼용)
+    quit_message_object = pygame.image.load('resources/screens/quit.png')
     quit_message_rect = quit_message_object.get_rect()
-    quit_message_rect.center = (320,300)
+    quit_message_rect.center = (512, 672)
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
-                if resume_message_rect.collidepoint(mouse_pos): #Resume 박스 클릭 시
+                if resume_message_rect.collidepoint(mouse_pos):  # Resume 박스 클릭 시
                     return
-                elif quit_message_rect.collidepoint(mouse_pos): #Quit 박스 클릭 시
+                elif quit_message_rect.collidepoint(mouse_pos):  # Quit 박스 클릭 시
                     pygame.quit()
                     sys.exit()
                 elif restart_message_rect.collidepoint(mouse_pos):
@@ -99,18 +96,18 @@ def game_paused():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 return
 
-        #스크린에 텍스트 넣은 박스 나타나게 하기
-        paused_screen.fill((255,255,255))
-        paused_screen.blit(paused_message_object, paused_message_rect)
-        paused_screen.blit(resume_message_object, resume_message_rect)
-        paused_screen.blit(restart_message_object, restart_message_rect)
-        paused_screen.blit(quit_message_object, quit_message_rect)
+        # 스크린에 텍스트 넣은 박스 나타나게 하기
+        game.screen.fill((255, 255, 255))
+        game.screen.blit(paused_message_object, paused_message_rect)
+        game.screen.blit(resume_message_object, resume_message_rect)
+        game.screen.blit(restart_message_object, restart_message_rect)
+        game.screen.blit(quit_message_object, quit_message_rect)
         pygame.display.update()
 
 def run_game(game, controller, level="level1"):
     # load level data
     if level == "level1":
-        board = Board('data/level1.txt')
+        board = Board('resources/level1.txt')
         gate_location = (285, 128)
         plate_locations = [(190, 168), (390, 168)]
         gate = Gates(gate_location, plate_locations)
@@ -128,7 +125,7 @@ def run_game(game, controller, level="level1"):
         annyong = Annyong(annyong_location)
 
     if level == "level2":
-        board = Board('data/level2.txt')
+        board = Board('resources/level2.txt')
         gates = []
 
         indeok_door_location = (390, 48)
@@ -143,7 +140,7 @@ def run_game(game, controller, level="level1"):
         annyong = Annyong(annyong_location)
 
     if level == "level3":
-        board = Board('data/level3.txt')
+        board = Board('resources/level3.txt')
         gates = []
 
         indeok_door_location = (5 * 16, 4 * 16)
@@ -206,7 +203,7 @@ def run_game(game, controller, level="level1"):
 
         if controller.press_key(events, K_ESCAPE):
             # show_level_screen(game, controller)
-            game_paused()
+            game_paused(game)
 
         # close window is player clicks on [x]
         for event in events:
