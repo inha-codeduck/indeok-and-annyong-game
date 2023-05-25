@@ -35,8 +35,8 @@ class Game:
         # display main level selectio screen background
         self.display.blit(level_select.screen, (0, 0))
 
-        # display the 5 level titles
-        for level in range(5):
+        # display the 3 level titles
+        for level in range(3):
             # get image from level_select titles dictionary
             image = level_select.titles[level + 1]
             # center title in x direction
@@ -99,6 +99,7 @@ class Game:
             if controller.press_key(events, K_RETURN):
                 # return the name of the level using dict
                 return level_dict[level_index]
+            
 
     def draw_level_select_indicator(self, level_select, level_index):
         """
