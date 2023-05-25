@@ -17,9 +17,7 @@ class LevelSelect():
         self.titles = {
             1: pygame.image.load('data/screens/level1.png'),
             2: pygame.image.load('data/screens/level2.png'),
-            3: pygame.image.load('data/screens/level3.png'),
-            4: pygame.image.load('data/screens/level4.png'),
-            5: pygame.image.load('data/screens/level5.png'),
+            3: pygame.image.load('data/screens/level3.png')
         }
         # set each entry in dictionary to have clear bacgkround
         for title in self.titles.keys():
