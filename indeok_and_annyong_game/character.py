@@ -73,17 +73,17 @@ class Character:
 
 class Indeok(Character):
     def __init__(self, location):
-        self.image = pygame.image.load('data/player_images/indeok.png')
+        self.image = pygame.image.load('resources/player_images/indeok.png')
         self.side_image = pygame.image.load(
-            'data/player_images/indeokside.png')
+            'resources/player_images/indeokside.png')
         self._type = "indeok"
         super().__init__(location)
 
 
 class Annyong(Character):
     def __init__(self, location):
-        self.image = pygame.image.load('data/player_images/annyong.png')
+        self.image = pygame.image.load('resources/player_images/annyong.png')
         self.side_image = pygame.image.load(
-            'data/player_images/annyongside.png')
+            'resources/player_images/annyongside.png')
         self._type = "annyong"
         super().__init__(location)

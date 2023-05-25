@@ -1,6 +1,6 @@
-from board import Board
-from gates import Gates
-from character import Annyong
+from indeok_and_annyong_game.board import Board
+from indeok_and_annyong_game.gates import Gates
+from indeok_and_annyong_game.character import Indeok, Annyong
 import pytest
 
 # import pygame and orther needed libraries
@@ -9,10 +9,10 @@ import pygame
 from pygame.locals import *
 
 # import classes
-from game import Game
-from doors import IndeokDoor, AnnyongDoor
-from controller import ArrowsController, WASDController, GeneralController
-from level_select import LevelSelect
+from indeok_and_annyong_game.game import Game
+from indeok_and_annyong_game.doors import IndeokDoor, AnnyongDoor
+from indeok_and_annyong_game.controller import ArrowsController, WASDController, GeneralController
+from indeok_and_annyong_game.level_select import LevelSelect
 
 """
 Collision unit tests
@@ -160,7 +160,7 @@ def test_movement(moving_right, moving_left, jumping,
     player = Annyong(player_cords)
 
     gates = Gates((285, 128), [(190, 168), (390, 168)])
-    board = Board('data/level1.txt')
+    board = Board('resources/level1.txt')
 
     # inital locaton
     init_x = player.rect.x

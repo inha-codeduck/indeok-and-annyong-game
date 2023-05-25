@@ -6,32 +6,18 @@ from pygame.locals import *
 class Game:
     # game meta functions
     def __init__(self):
-        """
-        Initialize game.
+        self.initialize_window()
 
-        Create a public display that the user sees. Also create an internal
-        display that only the game handles. The internal will be scaled to
-        fit public display.
-        """
-        # create external pygame window
-        WINDOW_SIZE = (640, 480)
-        self.screen = pygame.display.set_mode(WINDOW_SIZE, pygame.RESIZABLE)
+    def initialize_window(self):
+        WINDOW_SIZE = (1024, 768)
+        self.screen = pygame.display.set_mode(WINDOW_SIZE, pygame.SCALED)
         pygame.display.set_caption("Indeok and Annyong")
 
-        # create internal pygame window
         CHUNK_SIZE = 16
         DISPLAY_SIZE = (34 * CHUNK_SIZE, 25 * CHUNK_SIZE)
         self.display = pygame.Surface(DISPLAY_SIZE)
 
     def draw_level_screen(self, level_select):
-        """
-        Draw level selection screen.
-
-        Args:
-            level_select::level_select class object
-                A class object that contains the images for the level seleciton
-                screen.
-        """
         # display main level selectio screen background
         self.display.blit(level_select.screen, (0, 0))
 
@@ -52,19 +38,6 @@ class Game:
         # self.display.blit(level_select.right_player, right_cords)
 
     def user_select_level(self, level_select, controller):
-        """
-        Allow for user to select level.
-
-        As user clicks up and down arrows, move level indicator up and down.
-        When user clicks <enter>, return which level they selectd.
-
-        Args:
-            level_select::level_select class object
-                A class object that contains the images for the level seleciton
-                screen.
-            controller::controler class object
-                A contoller object that allows access to keyboard inputs
-        """
         # create current level selected index
         level_index = 0
         # create dictionary to map index to level name
@@ -102,16 +75,6 @@ class Game:
             
 
     def draw_level_select_indicator(self, level_select, level_index):
-        """
-        Draw level indicator around currently selected level
-
-        Args:
-            level_select::level_select class object
-                A class object that contains the images for the level seleciton
-                screen.
-            level_index::int
-                Intiger value between 0 and 4.
-        """
         indicator = level_select.indicator_image
         # center indicator at the center of screen
         location_x = (self.display.get_width() - indicator.get_width()) / 2
@@ -124,30 +87,13 @@ class Game:
         self.refresh_window()
 
     def refresh_window(self):
-        """
-        Refresh and draw the game screen
-        """
         new_window_size, center_cords = self.adjust_scale()
         # scale internal display to match window)
-        new_disp = pygame.transform.scale(self.display, new_window_size)
-        self.screen.blit(new_disp, center_cords)
+        new_display = pygame.transform.smoothscale(self.display, new_window_size)
+        self.screen.blit(new_display, center_cords)
         pygame.display.update()
 
     def adjust_scale(self):
-        """
-        Adjust internal screen for window scaling
-
-        If the window size is changed, scale the game to the maximum amount
-        while keeping the same aspect ratio. Also keep the game centered in the
-        window.
-
-        Returns:
-            display_size::tuple (height, width)
-                The updated height and width of the internal game display
-            cords::tuple (x_cord, y_cord)
-                The cordinates of the upper left corner of the internal game
-                display so that when it is blit onto window, it is centered.
-        """
         window_size = self.screen.get_size()
 
         # if window is longer than aspect ratio
@@ -165,25 +111,9 @@ class Game:
     # game mechanics
 
     def draw_level_background(self, board):
-        """
-        Draw the background of the level.
-
-        Args:
-            board::board class object
-                board class object that contains information on chunk images
-                and thier locations
-        """
         self.display.blit(board.get_background(), (0, 0))
 
     def draw_board(self, board):
-        """
-        Draw the board.
-
-        Args:
-            board::board class object
-                board class object that contains information on chunk images
-                and thier locations
-        """
         # draw the full background
         board_textures = board.get_board_textures()
         # draw the solid blocks and liquids
@@ -195,13 +125,6 @@ class Game:
                     )
 
     def draw_gates(self, gates):
-        """
-        Draw gates and buttons.
-
-        Args:
-            gates::[gate object, ...]
-                A list of gate objects with image and location information.
-        """
         for gate in gates:
             # dispaly gate
             self.display.blit(gate.gate_image, gate.gate_location)
@@ -211,14 +134,6 @@ class Game:
                 self.display.blit(gate.plate_image, location)
 
     def draw_doors(self, doors):
-        """
-        Draw doors
-
-        Args:
-            doors::[door object, door object]
-                A list of door class objects contianing image and locaiton
-                information of door, door background, and fame.
-        """
         for door in doors:
             # draw door background
             self.display.blit(door.door_background, door.background_location)
@@ -228,17 +143,6 @@ class Game:
             self.display.blit(door.frame_image, door.frame_location)
 
     def draw_player(self, players):
-        """
-        Draw the player.
-
-        If the player is moving right or left, draw the player as facing that
-        direction.
-
-        Args:
-            player::[player object, player object]
-                a list of player objects that contains movement data as well as
-                different images, one for each direction it can face.
-        """
         for player in players:
             if player.moving_right:
                 player_image = player.side_image
@@ -251,24 +155,6 @@ class Game:
             self.display.blit(player_image, (player.rect.x, player.rect.y))
 
     def move_player(self, board, gates, players):
-        """
-        Move player
-
-        This function primarily deals with collisions. The function moves the
-        player than checks for collisons with the board and gates. It then
-        adjusts the locaiton of the player to account for these collisions.
-
-        Args:
-            board::board class object
-                board class object that contains information on where solid
-                where.
-            gates::[gate object, ...]
-                A list of gate class objects that contians information on where
-                the solid aspects of the gate are.
-            players::[player object, player object]
-                A list of player objects that contain information on movement
-                and position.
-        """
         for player in players:
             # For each frame, calculate what it's motion is
             player.calc_movement()
@@ -332,21 +218,6 @@ class Game:
                 player.y_velocity = 0
 
     def check_for_death(self, board, players):
-        """
-        Check to see if player has falen in pool that kills them or if they are
-        crushed by a gate.
-
-        If a indeok type player collides with a annyong pool, they die. Likewise,
-        if a annyong type player collides with a lava pool, they die. If either
-        type of player collides with a goo pool, they die.
-        Args:
-            board::board class object
-                class object with information on board layout
-            gates::gate class object
-                class object with information on gate location and state
-            players::[player object, player object]
-                A list of player class objects.
-        """
         for player in players:
             # if the player is annyong
             if player.get_type() == "annyong":
@@ -366,17 +237,6 @@ class Game:
                 player.kill_player()
 
     def check_for_gate_press(self, gates, players):
-        """
-        Check to see if either player is touching one of the gate buttons.
-
-        Args:
-            gates::[gate object, ...]
-                A list of gate class object containing information on location
-                of the gate, the buttons, and images
-            players::[player object, player object]
-                A list of player class objects containing information on their
-                location.
-        """
         for gate in gates:
             plate_collisions = []
             for player in players:
@@ -394,15 +254,6 @@ class Game:
             gate.try_open_gate()
 
     def check_for_door_open(self, door, player):
-        """
-        Check to see if a player is at the door.
-
-        Args:
-            door::door class object
-                A door object containing information on its locaiton and state
-            player::player class object
-                A player ojbect containing information on its location
-        """
         # check to see if the player is at the door
         door_collision = self.collision_test(player.rect, [door.get_door()])
         # if the collision list is greater than zero, player is at door
@@ -416,17 +267,6 @@ class Game:
 
     @staticmethod
     def level_is_done(doors):
-        """
-        Check to see if the level is complete
-
-        Args:
-            doors::[door object, door object]
-                A list of door class objects that contain information on their
-                state.
-        Return:
-            is_win::bool
-                Return True if level is complete, or False if it is not
-        """
         # by default set win to true
         is_win = True
         for door in doors:
@@ -437,21 +277,6 @@ class Game:
 
     @staticmethod
     def collision_test(rect, tiles):
-        """
-        Create a list of tiles a pygame rect is colliding with.
-
-        Args:
-            rect::pygame.rect
-                A pygame rect that may be colliding with other rects.
-            tiles::[rect, rect, rect]
-                A list of pygame rects. The function checks to see if the
-                arguement "rect" colides with any of these "tiles".
-        Returns:
-            hit_list::list
-                A list of all "tiles" that the argument rect is colliding with.
-                If an empty list is returned, the rect is not colliding with
-                any tile.
-        """
         hit_list = []
         for tile in tiles:
             if rect.colliderect(tile):
