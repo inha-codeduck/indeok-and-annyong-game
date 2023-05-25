@@ -1,29 +1,25 @@
 # ----
 # Site
 
-title: Hydra Template
-url: "https://proud-alligator.cloudvent.net"
-baseurl:
+title: Indeok & Annyong Game
+url: "https://inha-codeduck.github.io"
+baseurl: "/indeok-and-annyong-game"
 google_analytics_key:
 google_maps_javascript_api_key:
 disqus_shortname:
 
 # Values for the jekyll-seo-tag gem (https://github.com/jekyll/jekyll-seo-tag)
 logo: /siteicon.png
-description: Product marketing template for Jekyll.
+description: This is a simple game featuring Annyong and Indeok characters. Players can control both characters using keyboard inputs.
 author:
   name:
   email:
   twitter: # twitter username without the @ symbol
-social:
-  name: Hydra Template
-  links:
-    - https://github.com/CloudCannon/hydra-jekyll-template
 
 # -----
 # Build
 
-timezone: Etc/UTC
+timezone: Asia/Seoul
 
 collections:
   staff_members:
