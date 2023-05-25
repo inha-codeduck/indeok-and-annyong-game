@@ -2,8 +2,8 @@
 # Site
 
 title: Indeok and Annyong Game
-url: "https://codeduck.duckdns.org/indeok-and-annyong-game"
-baseurl:
+url: "https://inha-codeduck.github.io"
+baseurl: "indeok-and-annyong-game"
 google_analytics_key:
 google_maps_javascript_api_key:
 disqus_shortname:
