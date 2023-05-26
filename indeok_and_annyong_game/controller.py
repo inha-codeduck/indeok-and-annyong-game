@@ -1,7 +1,7 @@
 import sys
 import pygame
 from pygame.locals import *
-
+from indeok_and_annyong_game.mp3 import Sound
 
 class Controller:
     def __init__(self):
@@ -28,6 +28,8 @@ class Controller:
                     player.moving_left = True
                 # if up key pressed, set character to jump
                 elif event.key == self._controls["up"]:
+                    jump_sound = Sound(name = "jump")
+                    jump_sound.play()
                     # air_timer allows user to jump slightly after they have
                     # already fallen off of a block, makes game feel more
                     # natural. Common platformer tecnique

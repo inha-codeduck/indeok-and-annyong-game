@@ -7,7 +7,7 @@ class Sound:
     def __init__(self, name = None):
         if name is not None:
             self.name = name
-            self.file_name = pygame.mixer.Sound(f"{current_path}/assets/sounds/{self.name}.mp3")
+            self.file_name = pygame.mixer.Sound(f"{current_path}/resources/assets/sounds/{self.name}.mp3")
         else:
             self.name = None
             self.file_name = None
