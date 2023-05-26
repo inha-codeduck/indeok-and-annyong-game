@@ -1,7 +1,7 @@
 import sys
 import pygame
 from pygame.locals import *
-
+from indeok_and_annyong_game.mp3 import Sound
 
 class Gates:
     def __init__(self, gate_location, plate_locatons):
@@ -53,6 +53,8 @@ class Gates:
         gate_y = self.gate_location[1]
         # if plate is pressed and gate is not open
         if self.plate_is_pressed and not self._gate_is_open:
+            gate_sound = Sound(name = "gate")
+            gate_sound.play()
             # set new gate location
             self.gate_location = (gate_x, gate_y - 2 * CHUNK_SIZE)
             # move gate
