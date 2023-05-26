@@ -108,7 +108,7 @@ def game_paused(game):
                     selected_button = (selected_button + 1) % 3
                 elif event.key == pygame.K_UP:  # 위 방향키를 누르면 이전 버튼 선택
                     selected_button = (selected_button - 1) % 3
-                elif event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:  # Enter 키 또는 스페이스바를 누르면 선택된 버튼 실행
+                elif event.key == pygame.K_RETURN:  # Enter 키 누르면 선택된 버튼 실행
                     if selected_button == 0:
                         return
                     elif selected_button == 1:
