@@ -62,22 +62,22 @@ def game_paused(game):
     # Pause 글씨 박스 만들기
     paused_message_object = pygame.image.load('resources/screens/paused.png')
     paused_message_rect = paused_message_object.get_rect()
-    paused_message_rect.center = (512, 384)
+    paused_message_rect.center = (512, 150)
 
     # Resume 글씨 박스 만들기(버튼용)
     resume_message_object = pygame.image.load('resources/screens/continue.png')
     resume_message_rect = resume_message_object.get_rect()
-    resume_message_rect.center = (512, 480)
+    resume_message_rect.center = (512, 300)
 
     # Restart 글씨 박스 만들기(버튼용)
     restart_message_object = pygame.image.load('resources/screens/restart.png')
     restart_message_rect = restart_message_object.get_rect()
-    restart_message_rect.center = (512, 576)
+    restart_message_rect.center = (512, 400)
 
     # Quit 글씨 박스 만들기(버튼용)
     quit_message_object = pygame.image.load('resources/screens/quit.png')
     quit_message_rect = quit_message_object.get_rect()
-    quit_message_rect.center = (512, 672)
+    quit_message_rect.center = (512, 500)
 
     while True:
         for event in pygame.event.get():
