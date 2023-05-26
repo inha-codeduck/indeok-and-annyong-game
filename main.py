@@ -78,6 +78,11 @@ def game_paused(game):
     quit_message_object = pygame.image.load('resources/screens/quit.png')
     quit_message_rect = quit_message_object.get_rect()
     quit_message_rect.center = (512, 500)
+    
+    #반투명 배경 생성
+    background_surface = pygame.Surface((1280, 768))
+    background_surface.set_alpha(2.5)  # 투명도 설정(set_alpha안에 숫자가 작을수록 투명해짐)
+    background_surface.fill((255, 255, 255))
 
     while True:
         for event in pygame.event.get():
@@ -96,8 +101,8 @@ def game_paused(game):
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 return
 
-        # 스크린에 텍스트 넣은 박스 나타나게 하기
-        game.screen.fill((255, 255, 255))
+        # 스크린에 텍스트 넣은 박스, 투명배경 나타나게 하기
+        game.screen.blit(background_surface,(0,0))
         game.screen.blit(paused_message_object, paused_message_rect)
         game.screen.blit(resume_message_object, resume_message_rect)
         game.screen.blit(restart_message_object, restart_message_rect)
