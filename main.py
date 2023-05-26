@@ -84,6 +84,9 @@ def game_paused(game):
     background_surface.set_alpha(2.5)  # 투명도 설정(set_alpha안에 숫자가 작을수록 투명해짐)
     background_surface.fill((255, 255, 255))
 
+    # 선택된 버튼 초기화
+    selected_button = 0
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -98,8 +101,21 @@ def game_paused(game):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                return
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:  # ESC 키를 누르면 Resume
+                    return
+                elif event.key == pygame.K_DOWN:  # 아래 방향키를 누르면 다음 버튼 선택
+                    selected_button = (selected_button + 1) % 3
+                elif event.key == pygame.K_UP:  # 위 방향키를 누르면 이전 버튼 선택
+                    selected_button = (selected_button - 1) % 3
+                elif event.key == pygame.K_RETURN or event.key == pygame.K_SPACE:  # Enter 키 또는 스페이스바를 누르면 선택된 버튼 실행
+                    if selected_button == 0:
+                        return
+                    elif selected_button == 1:
+                        main()
+                    elif selected_button == 2:
+                        pygame.quit()
+                        sys.exit()
 
         # 스크린에 텍스트 넣은 박스, 투명배경 나타나게 하기
         game.screen.blit(background_surface,(0,0))
@@ -107,6 +123,15 @@ def game_paused(game):
         game.screen.blit(resume_message_object, resume_message_rect)
         game.screen.blit(restart_message_object, restart_message_rect)
         game.screen.blit(quit_message_object, quit_message_rect)
+
+        # 선택된 버튼 표시
+        if selected_button == 0:
+            pygame.draw.rect(game.screen, (0, 0, 0), resume_message_rect, 4, border_radius = 15)
+        elif selected_button == 1:
+            pygame.draw.rect(game.screen, (0, 0, 0), restart_message_rect, 4, border_radius = 15)
+        elif selected_button == 2:
+            pygame.draw.rect(game.screen, (0, 0, 0), quit_message_rect, 4, border_radius = 15)
+
         pygame.display.update()
 
 def run_game(game, controller, level="level1"):
