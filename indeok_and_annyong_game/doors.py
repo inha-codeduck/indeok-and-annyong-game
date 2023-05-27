@@ -1,7 +1,7 @@
 import sys
 import pygame
 from pygame.locals import *
-
+from indeok_and_annyong_game.sound import Sound
 
 class Doors:
     def __init__(self):
@@ -63,6 +63,8 @@ class Doors:
             self._height_raised += DOOR_SPEED
             # if door has raised 31 pixels
             if self._height_raised >= 31:
+                door_sound = Sound(name = "door")
+                door_sound.play()
                 # set door to being fully raised
                 self._door_open = True
         # if there is not a player at door and the door as fully open
