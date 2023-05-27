@@ -1,7 +1,7 @@
 import sys
 import pygame
 from pygame.locals import *
-from indeok_and_annyong_game.mp3 import Sound
+from indeok_and_annyong_game.sound import Sound
 
 class Gates:
     def __init__(self, gate_location, plate_locatons):
