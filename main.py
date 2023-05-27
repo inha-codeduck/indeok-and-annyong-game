@@ -1,5 +1,6 @@
 import sys
 import pygame
+import time
 from pygame.locals import *
 
 # Import modules from the indeok_and_annyong_game package
@@ -56,8 +57,10 @@ def show_death_screen(game, controller, level):
         if controller.press_key(events, K_ESCAPE):
             show_level_screen(game, controller)
 
-def game_paused(game):
+def game_paused(game, elapsed_time):
     pygame.font.init()
+
+    paused_time = elapsed_time
 
     # Pause 글씨 박스 만들기
     paused_message_object = pygame.image.load('resources/screens/paused.png')
@@ -91,26 +94,30 @@ def game_paused(game):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
+
                 if resume_message_rect.collidepoint(mouse_pos):  # Resume 박스 클릭 시
-                    return
+                    return paused_time
                 elif quit_message_rect.collidepoint(mouse_pos):  # Quit 박스 클릭 시
                     pygame.quit()
                     sys.exit()
                 elif restart_message_rect.collidepoint(mouse_pos):
                     main()
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
             if event.type == pygame.KEYDOWN:
+
                 if event.key == pygame.K_ESCAPE:  # ESC 키를 누르면 Resume
-                    return
+                    return paused_time
                 elif event.key == pygame.K_DOWN:  # 아래 방향키를 누르면 다음 버튼 선택
                     selected_button = (selected_button + 1) % 3
                 elif event.key == pygame.K_UP:  # 위 방향키를 누르면 이전 버튼 선택
                     selected_button = (selected_button - 1) % 3
                 elif event.key == pygame.K_RETURN:  # Enter 키 누르면 선택된 버튼 실행
                     if selected_button == 0:
-                        return
+                        return paused_time
                     elif selected_button == 1:
                         main()
                     elif selected_button == 2:
@@ -137,6 +144,7 @@ def game_paused(game):
 def run_game(game, controller, level="level1"):
     # load level data
     if level == "level1":
+        start_time = time.time()
         board = Board('resources/level1.txt')
         gate_location = (285, 128)
         plate_locations = [(190, 168), (390, 168)]
@@ -155,6 +163,7 @@ def run_game(game, controller, level="level1"):
         annyong = Annyong(annyong_location)
 
     if level == "level2":
+        start_time = time.time()
         board = Board('resources/level2.txt')
         gates = []
 
@@ -170,6 +179,7 @@ def run_game(game, controller, level="level1"):
         annyong = Annyong(annyong_location)
 
     if level == "level3":
+        start_time = time.time()
         board = Board('resources/level3.txt')
         gates = []
 
@@ -190,6 +200,7 @@ def run_game(game, controller, level="level1"):
     wasd_controller = WASDController()
 
     clock = pygame.time.Clock()
+    font = pygame.font.Font(None, 40)
 
     # main game loop
     while True:
@@ -233,7 +244,8 @@ def run_game(game, controller, level="level1"):
 
         if controller.press_key(events, K_ESCAPE):
             # show_level_screen(game, controller)
-            game_paused(game)
+            paused_time = game_paused(game, elapsed_time)
+            start_time = time.time() - paused_time
 
         # close window is player clicks on [x]
         for event in events:
@@ -241,6 +253,15 @@ def run_game(game, controller, level="level1"):
                 pygame.quit()
                 sys.exit()
 
+        #게임경과시간 나타내기
+        elapsed_time = time.time() - start_time
 
+        text = font.render("{:02d}:{:02d}".format(int(elapsed_time//60),int(elapsed_time%60)), True, (255, 255, 255))
+        text_rect = text.get_rect()
+        text_rect.center = (950,15)
+        game.screen.blit(text, text_rect)
+
+        pygame.display.flip()
+        
 if __name__ == '__main__':
     main()
