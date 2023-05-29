@@ -79,7 +79,7 @@ class Doors:
 
 class IndeokDoor(Doors):
     def __init__(self, door_location):
-        CHUNK_SIZE = 16
+        CHUNK_SIZE = 32
         # set door loaction as input door loaction
         self.door_location = door_location
         # set door background location as the same as the door
@@ -94,7 +94,7 @@ class IndeokDoor(Doors):
 
 class AnnyongDoor(Doors):
     def __init__(self, door_location):
-        CHUNK_SIZE = 16
+        CHUNK_SIZE = 32
         # set door loaction as input door loaction
         self.door_location = door_location
         # set door background location as the same as the door

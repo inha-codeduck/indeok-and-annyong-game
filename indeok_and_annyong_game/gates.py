@@ -48,7 +48,7 @@ class Gates:
         """
         If person is on button, open gate, otherwise, keep gate closed
         """
-        CHUNK_SIZE = 20
+        CHUNK_SIZE = 32
         gate_x = self.gate_location[0]
         gate_y = self.gate_location[1]
         # if plate is pressed and gate is not open
@@ -56,17 +56,17 @@ class Gates:
             gate_sound = Sound(name = "gate")
             gate_sound.play()
             # set new gate location
-            self.gate_location = (gate_x, gate_y - 2 * CHUNK_SIZE)
+            self.gate_location = (gate_x, gate_y - 2.5 * CHUNK_SIZE)
             # move gate
-            self._gate.y -= 2 * CHUNK_SIZE
+            self._gate.y -= 2.5 * CHUNK_SIZE
             # set gate as being open
             self._gate_is_open = True
         # if plate is not being pressed and gate is open
         if not self.plate_is_pressed and self._gate_is_open:
             # set new gate location
-            self.gate_location = (gate_x, gate_y + 2 * CHUNK_SIZE)
+            self.gate_location = (gate_x, gate_y + 2.5 * CHUNK_SIZE)
             # move gate
-            self._gate.y += 2 * CHUNK_SIZE
+            self._gate.y += 2.5 * CHUNK_SIZE
             # set gate as being closed
             self._gate_is_open = False
 

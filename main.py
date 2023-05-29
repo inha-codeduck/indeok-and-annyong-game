@@ -20,19 +20,23 @@ def main():
 
 
 def show_intro_screen(game, controller):
+    # game.screen.fill(BLACK)
     intro_screen = pygame.image.load('resources/screens/intro_screen.png')
     game.display.blit(intro_screen, (0, 0))
     while True:
         game.refresh_window()
-        if controller.press_key(pygame.event.get(), K_RETURN):
+        events = pygame.event.get()
+        if controller.press_key(events, K_RETURN):
             show_level_screen(game, controller)
+        if controller.press_key(events, K_ESCAPE):
+            pygame.quit()
+            sys.exit()
 
 
 def show_level_screen(game, controller):
     level_select = LevelSelect()
     level = game.user_select_level(level_select, controller)
     run_game(game, controller, level)
-
 
 def show_win_screen(game, controller):
     win_screen = pygame.image.load('resources/screens/win_screen.png')
@@ -146,20 +150,20 @@ def run_game(game, controller, level="level1"):
     if level == "level1":
         start_time = time.time()
         board = Board('resources/level1.txt')
-        gate_location = (285, 128)
-        plate_locations = [(190, 168), (390, 168)]
+        gate_location = (500, 256)
+        plate_locations = [(405, 340), (605, 340)]
         gate = Gates(gate_location, plate_locations)
         gates = [gate]
 
-        indeok_door_location = (64, 48)
+        indeok_door_location = (64, 96)
         indeok_door = IndeokDoor(indeok_door_location)
-        annyong_door_location = (128, 48)
+        annyong_door_location = (128, 96)
         annyong_door = AnnyongDoor(annyong_door_location)
         doors = [indeok_door, annyong_door]
 
-        indeok_location = (16, 336)
+        indeok_location = (64, 640)
         indeok = Indeok(indeok_location)
-        annyong_location = (35, 336)
+        annyong_location = (110, 640)
         annyong = Annyong(annyong_location)
 
     if level == "level2":
@@ -167,15 +171,15 @@ def run_game(game, controller, level="level1"):
         board = Board('resources/level2.txt')
         gates = []
 
-        indeok_door_location = (390, 48)
+        indeok_door_location = (768, 96)
         indeok_door = IndeokDoor(indeok_door_location)
-        annyong_door_location = (330, 48)
+        annyong_door_location = (640, 96)
         annyong_door = AnnyongDoor(annyong_door_location)
         doors = [indeok_door, annyong_door]
 
-        indeok_location = (16, 336)
+        indeok_location = (32, 640)
         indeok = Indeok(indeok_location)
-        annyong_location = (35, 336)
+        annyong_location = (80, 640)
         annyong = Annyong(annyong_location)
 
     if level == "level3":
@@ -183,15 +187,15 @@ def run_game(game, controller, level="level1"):
         board = Board('resources/level3.txt')
         gates = []
 
-        indeok_door_location = (5 * 16, 4 * 16)
+        indeok_door_location = (32 * 17 + 15, 32 * 3)
         indeok_door = IndeokDoor(indeok_door_location)
-        annyong_door_location = (28 * 16, 4 * 16)
+        annyong_door_location = (32 * 13 + 15, 32 * 3)
         annyong_door = AnnyongDoor(annyong_door_location)
         doors = [indeok_door, annyong_door]
 
-        indeok_location = (28 * 16, 4 * 16)
+        indeok_location = (32 * 26, 32 * 4)
         indeok = Indeok(indeok_location)
-        annyong_location = (5 * 16, 4 * 16)
+        annyong_location = (32 * 5, 32 * 4)
         annyong = Annyong(annyong_location)
 
     # initialize needed classes

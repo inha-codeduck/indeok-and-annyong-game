@@ -19,7 +19,7 @@ class LevelSelect():
             2: pygame.image.load('resources/screens/level2.png'),
             3: pygame.image.load('resources/screens/level3.png')
         }
-        # set each entry in dictionary to have clear bacgkround
+        # set each entry in dictionary to have clear background
         for title in self.titles.keys():
             self.titles[title].set_colorkey((255, 0, 255))
 

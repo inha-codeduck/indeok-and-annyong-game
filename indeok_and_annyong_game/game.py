@@ -13,8 +13,8 @@ class Game:
         self.screen = pygame.display.set_mode(WINDOW_SIZE, pygame.SCALED)
         pygame.display.set_caption("Indeok and Annyong")
 
-        CHUNK_SIZE = 16
-        DISPLAY_SIZE = (34 * CHUNK_SIZE, 25 * CHUNK_SIZE)
+        CHUNK_SIZE = 32
+        DISPLAY_SIZE = (32 * CHUNK_SIZE, 24 * CHUNK_SIZE)
         self.display = pygame.Surface(DISPLAY_SIZE)
 
     def draw_level_screen(self, level_select):
@@ -28,7 +28,7 @@ class Game:
             # center title in x direction
             title_x = (self.display.get_width() - image.get_width()) / 2
             # move titles down so that they don't overlap
-            title_y = 50 * level + 100
+            title_y = 130 * level + 200
             self.display.blit(image, (title_x, title_y))
 
         # display the characters on the left and right of level titles
@@ -79,7 +79,7 @@ class Game:
         # center indicator at the center of screen
         location_x = (self.display.get_width() - indicator.get_width()) / 2
         # move indicator down depending on level index
-        location_y = level_index * 50 + 96
+        location_y = level_index * 130 + 200
         # create tuple of cordinates
         indicator_location = (location_x, location_y)
         # draw indicator
@@ -114,6 +114,7 @@ class Game:
         self.display.blit(board.get_background(), (0, 0))
 
     def draw_board(self, board):
+        CHUNK_SIZE = 32
         # draw the full background
         board_textures = board.get_board_textures()
         # draw the solid blocks and liquids
@@ -121,7 +122,7 @@ class Game:
             for x, tile in enumerate(row):
                 if tile != "0":
                     self.display.blit(
-                        board_textures[f"{tile}"], (x * 16, y * 16)
+                        board_textures[f"{tile}"], (x * CHUNK_SIZE, y * CHUNK_SIZE)
                     )
 
     def draw_gates(self, gates):

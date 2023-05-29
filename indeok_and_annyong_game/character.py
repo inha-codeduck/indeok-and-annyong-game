@@ -23,10 +23,10 @@ class Character:
         Set motion and physics constants and calculate movement
         """
         # Motion constants
-        LATERAL_SPEED = 3
-        JUMP_SPEED = -5
-        GRAVITY = 0.2
-        TERMINAL_VELOCITY = 3
+        LATERAL_SPEED = 3.9
+        JUMP_SPEED = -9.5
+        GRAVITY = 0.35
+        TERMINAL_VELOCITY = 8
 
         # set initially to not moving
         self._movement = [0, 0]

@@ -10,7 +10,7 @@ class Board:
             path::str
                 A path to a text file containing block placements
         """
-        self.CHUNK_SIZE = 16
+        self.CHUNK_SIZE = 32
         self.load_map(path)
         self.load_images()
         self.make_solid_blocks()
@@ -22,7 +22,7 @@ class Board:
         '''
         Create an array which contains the type of every chunk on the map.
 
-        Each level map is made up of 24x32 chunks. Each type of chunk has
+        Each level map is made up of 32x32 chunks. Each type of chunk has
         specfic texture and properties. Each unique chunks type has a
         unique string value.
 
@@ -54,7 +54,6 @@ class Board:
         # create dictionary that maps a string to a board texture
         self._board_textures = {
             "100": pygame.image.load('resources/board_textures/100.png'),
-            "100": pygame.image.load('resources/board_textures/100.png'),
             "111": pygame.image.load('resources/board_textures/111.png'),
             "112": pygame.image.load('resources/board_textures/112.png'),
             "113": pygame.image.load('resources/board_textures/113.png'),
@@ -63,6 +62,7 @@ class Board:
             "122": pygame.image.load('resources/board_textures/122.png'),
             "123": pygame.image.load('resources/board_textures/123.png'),
             "124": pygame.image.load('resources/board_textures/124.png'),
+            "125": pygame.image.load('resources/board_textures/125.png'),
             "2": pygame.image.load('resources/board_textures/lava.png'),
             "3": pygame.image.load('resources/board_textures/water.png'),
             "4": pygame.image.load('resources/board_textures/goo.png')
@@ -89,15 +89,14 @@ class Board:
         which the player can collide with.
         """
         # create empty list to contain solid block rects
-        CHUNKS_SIZE = 16
         self._solid_blocks = []
         for y, row in enumerate(self._game_map):
             for x, tile in enumerate(row):
                 # if block is not air or a liquid
                 if tile not in ['0', '2', '3', '4']:
-                    # create a 16 x 16 rect and add it to the list
+                    # create a 32 x 32 rect and add it to the list
                     self._solid_blocks.append(
-                        pygame.Rect(x * self.CHUNK_SIZE, y * self.CHUNK_SIZE,
+                        pygame.Rect(x * self.CHUNK_SIZE, y * self.CHUNK_SIZE - 10,
                                     self.CHUNK_SIZE, self.CHUNK_SIZE))
 
     def get_solid_blocks(self):
@@ -116,7 +115,7 @@ class Board:
             for x, tile in enumerate(row):
                 # if number in game map represents lava
                 if tile == "2":
-                    # add a 16x8 rect to the list
+                    # add a 32x16 rect to the list
                     self._lava_pools.append(
                         pygame.Rect(x * self.CHUNK_SIZE, y * self.CHUNK_SIZE
                                     + self.CHUNK_SIZE / 2, self.CHUNK_SIZE,
@@ -138,7 +137,7 @@ class Board:
             for x, tile in enumerate(row):
                 # if number in game map represents water
                 if tile == "3":
-                    # add a 16x8 rect to the list
+                    # add a 32x16 rect to the list
                     self._water_pools.append(
                         pygame.Rect(x * self.CHUNK_SIZE, y * self.CHUNK_SIZE
                                     + self.CHUNK_SIZE / 2, self.CHUNK_SIZE,
@@ -160,7 +159,7 @@ class Board:
             for x, tile in enumerate(row):
                 # if number in game map represents goo
                 if tile == "4":
-                    # add a 16x8 rect to the list
+                    # add a 32x16 rect to the list
                     self._goo_pools.append(
                         pygame.Rect(x * self.CHUNK_SIZE, y * self.CHUNK_SIZE
                                     + self.CHUNK_SIZE / 2, self.CHUNK_SIZE,
