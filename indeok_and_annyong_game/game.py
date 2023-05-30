@@ -1,7 +1,8 @@
 import sys
 import pygame
+import time
 from pygame.locals import *
-
+from indeok_and_annyong_game.sound import Sound
 
 class Game:
     # game meta functions
@@ -235,6 +236,9 @@ class Game:
 
             # if the is_killed list is longer than 0, kill player
             if is_killed:
+                dead_sound = Sound(name = "dead")
+                dead_sound.play()
+                time.sleep(0.01)
                 player.kill_player()
 
     def check_for_gate_press(self, gates, players):
