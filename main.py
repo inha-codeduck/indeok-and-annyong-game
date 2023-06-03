@@ -38,10 +38,18 @@ def show_level_screen(game, controller):
     level = game.user_select_level(level_select, controller)
     run_game(game, controller, level)
 
-def show_win_screen(game, controller):
+def show_win_screen(game, controller, elapsed_time):
     win_screen = pygame.image.load('resources/screens/win_screen.png')
     win_screen.set_colorkey((255, 0, 255))
+    result_font = pygame.font.Font(None, 60)
+
+    #기록 텍스트로 표시
+    result = result_font.render("RECORD : {:02d}m {:02d}s".format(int(elapsed_time//60),int(elapsed_time%60)), True, (0, 0, 0))
+    result_rect = result.get_rect()
+    result_rect.center = (512,400)
+
     game.display.blit(win_screen, (0, 0))
+    game.display.blit(result, result_rect)
 
     while True:
         game.refresh_window()
@@ -244,7 +252,7 @@ def run_game(game, controller, level="level1"):
             show_death_screen(game, controller, level)
 
         if game.level_is_done(doors):
-            show_win_screen(game, controller)
+            show_win_screen(game, controller, elapsed_time)
 
         if controller.press_key(events, K_ESCAPE):
             # show_level_screen(game, controller)
