@@ -63,6 +63,7 @@ class Board:
             "123": pygame.image.load('resources/board_textures/123.png'),
             "124": pygame.image.load('resources/board_textures/124.png'),
             "125": pygame.image.load('resources/board_textures/125.png'),
+            "126": pygame.image.load('resources/board_textures/126.png'),
             "2": pygame.image.load('resources/board_textures/lava.png'),
             "3": pygame.image.load('resources/board_textures/water.png'),
             "4": pygame.image.load('resources/board_textures/goo.png')

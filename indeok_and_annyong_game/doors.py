@@ -52,7 +52,7 @@ class Doors:
         Raise door if player is at the door and the door is closed.
         """
         # set door opening/closing speed
-        DOOR_SPEED = 1.5
+        DOOR_SPEED = 3
         door_x = self.door_location[0]
         door_y = self.door_location[1]
         # if there is a player at the door and the door isn't open yet
@@ -61,8 +61,8 @@ class Doors:
             self.door_location = (door_x, door_y - DOOR_SPEED)
             # update internal measure of door height
             self._height_raised += DOOR_SPEED
-            # if door has raised 31 pixels
-            if self._height_raised >= 31:
+            # if door has raised 63 pixels
+            if self._height_raised >= 63:
                 door_sound = Sound(name = "door")
                 door_sound.play()
                 # set door to being fully raised
